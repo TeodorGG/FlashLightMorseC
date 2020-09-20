@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1045354988763",
+    "firebase_url": "https://morsecodeflash.firebaseio.com",
+    "project_id": "morsecodeflash",
+    "storage_bucket": "morsecodeflash.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045354988763:android:00511d37cd7a60339a78fe",
+        "android_client_info": {
+          "package_name": "com.example.flashlightmorsec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045354988763-b806mgtrectkhqgiv4iqvicj7u151mfl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flashlightmorsec",
+            "certificate_hash": "f08447ab95ef9ebd4c0512b10a6c1d3acdb8bea1"
+          }
+        },
+        {
+          "client_id": "1045354988763-k7k9kt4utc8rvd4od0bkq2hansv4tqos.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEkmnF1uABQyT62_pJrqr9IGEW_GHj0Iw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045354988763-k7k9kt4utc8rvd4od0bkq2hansv4tqos.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
