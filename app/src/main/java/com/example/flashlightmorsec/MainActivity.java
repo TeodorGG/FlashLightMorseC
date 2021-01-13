@@ -30,6 +30,8 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 public class MainActivity extends AppCompatActivity {
 
     ImageView flashimg , vibrimg , setingsimg, infoimg;
@@ -46,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private AdView mAdView;
+
+    GoLight goLight = new GoLight();
+
+    CameraManager camManager;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -99,26 +106,21 @@ public class MainActivity extends AppCompatActivity {
 
         flashLightStatus = false;
 
+        camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        camManager = (CameraManager) this.getSystemService(Context.CAMERA_SERVICE);
+
+
         flashimg.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NewApi")
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
 
-                String message = mesage.getText().toString();
+                String str_message = mesage.getText().toString();
+                goLight.setCamManager(camManager);
+                goLight.light(str_message);
 
-                String morz = "", morrr;
-
-                for (int i = 0; i < message.length(); i++) {
-                    char ch = message.charAt(i);
-
-                    String mc = morseEncode(ch);
-                    morrr = morz;
-                    morz = morrr + " " + mc;
-
-                }
-
-                morseToFlash(morz);
+                //morseToFlash(morz);
 
             }
         });
@@ -134,11 +136,11 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < message.length(); i++) {
                     char ch = message.charAt(i);
 
-                    String mc = morseEncode(ch);
-                    morrr = morz;
-                    morz = morrr + " " + mc;
+//                    String mc = morseEncode(ch);
+//                    morrr = morz;
+//                    morz = morrr + " " + mc;
 
-                    Log.d("sdsdsd", "" + morz);
+                    //Log.d("sdsdsd", "" + morz);
 
                 }
 
@@ -220,58 +222,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void morseToFlash(String morse) {
-        Handler handler = new Handler();
-        int delay = 0,speed = 1;
-
-
-        for (int x = 0; x < morse.length(); x++) {
-
-            if (morse.charAt(x) == '.') {
-                handler.postDelayed(new Runnable() {
-                    @SuppressLint("NewApi")
-                    public void run() {
-                        flashLightOn();
-                    }
-                }, (delay += (200 * speed)));
-
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        flashLightOff();
-                    }
-                }, (delay += (200 * speed)));
-
-            } else if (morse.charAt(x) == '-') {
-                handler.postDelayed(new Runnable() {
-                    @SuppressLint("NewApi")
-                    public void run() {
-                        flashLightOn();
-                    }
-                }, (delay += (400 * speed)));
-
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        flashLightOff();
-                    }
-                }, (delay += (400 * speed)));
-
-            } else if (morse.charAt(x) == ' ') {
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-
-                    }
-                }, (delay += (600 * speed)));
-
-
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-
-                    }
-                }, (delay += (600 * speed)));
-            }
-        }
-    }
-
     public void onvibrationonpunct(){
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 // Vibrate for 500 milliseconds
@@ -295,150 +245,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("NewApi")
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void flashLightOn() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-            String cameraId = null;
-            try {
-                cameraId = camManager.getCameraIdList()[0];
-                camManager.setTorchMode(cameraId, true);   //Turn ON
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @SuppressLint("NewApi")
-    public void flashLightOff() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            try {
-                String cameraId;
-                CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-                camManager = (CameraManager) this.getSystemService(Context.CAMERA_SERVICE);
-                if (camManager != null) {
-                    cameraId = camManager.getCameraIdList()[0]; // Usually front camera is at 0 position.
-                    camManager.setTorchMode(cameraId, false);
-                }
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            }}
-
-    }
-
-    static String morseEncode(char x)
-    {
-
-        switch (x)
-        {
-            case 'a':
-                return ".-";
-            case 'b':
-                return "-...";
-            case 'c':
-                return "-.-.";
-            case 'd':
-                return "-..";
-            case 'e':
-                return ".";
-            case 'f':
-                return "..-.";
-            case 'g':
-                return "--.";
-            case 'h':
-                return "....";
-            case 'i':
-                return "..";
-            case 'j':
-                return ".---";
-            case 'k':
-                return "-.-";
-            case 'l':
-                return ".-..";
-            case 'm':
-                return "--";
-            case 'n':
-                return "-.";
-            case 'o':
-                return "---";
-            case 'p':
-                return ".--.";
-            case 'q':
-                return "--.-";
-            case 'r':
-                return ".-.";
-            case 's':
-                return "...";
-            case 't':
-                return "-";
-            case 'u':
-                return "..-";
-            case 'v':
-                return "...-";
-            case 'w':
-                return ".--";
-            case 'x':
-                return "-..-";
-            case 'y':
-                return "-.--";
-            case 'z':
-                return "--..";
-            case 'A':
-                return ".-";
-            case 'B':
-                return "-...";
-            case 'C':
-                return "-.-.";
-            case 'D':
-                return "-..";
-            case 'E':
-                return ".";
-            case 'F':
-                return "..-.";
-            case 'G':
-                return "--.";
-            case 'H':
-                return "....";
-            case 'I':
-                return "..";
-            case 'J':
-                return ".---";
-            case 'K':
-                return "-.-";
-            case 'L':
-                return ".-..";
-            case 'M':
-                return "--";
-            case 'N':
-                return "-.";
-            case 'O':
-                return "---";
-            case 'P':
-                return ".--.";
-            case 'Q':
-                return "--.-";
-            case 'R':
-                return ".-.";
-            case 'S':
-                return "...";
-            case 'T':
-                return "-";
-            case 'U':
-                return "..-";
-            case 'V':
-                return "...-";
-            case 'W':
-                return ".--";
-            case 'X':
-                return "-..-";
-            case 'Y':
-                return "-.--";
-            case 'Z':
-                return "--..";
-        }
-        return "";
-    }
 
     @Override
     protected void onResume() {
